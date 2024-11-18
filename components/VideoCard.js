@@ -3,11 +3,11 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import VideoDetailPage from '.././pages/VideoDetailPage';
 
-const VideoCard = ({ thumbnail, title, views, author }) => {
+const VideoCard = ({ thumbnail, title, views, author, videoId }) => {
   const navigation = useNavigation();
 
   const handlePress = () => {
-    navigation.navigate('Details', { title, author, views });
+    navigation.navigate('Details', { title, author, views, videoId, thumbnail });
   };
 
   return (
