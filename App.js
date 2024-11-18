@@ -1,20 +1,22 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Home from './pages/Home';
-import Profile from './pages/Profile';
-import VideoDetails from './pages/VideoDetails';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import HomePage from './pages/HomePage';
+import LibraryPage from './pages/LibraryPage';
+import VideoDetailPage from './pages/VideoDetailPage';
 
-const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
-export default function App() {
+const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="Profile" component={Profile} />
-        <Stack.Screen name="VideoDetails" component={VideoDetails} />
-      </Stack.Navigator>
+      <Tab.Navigator>
+        <Tab.Screen name="Home" component={HomePage} />
+        <Tab.Screen name="Library" component={LibraryPage} />
+        <Tab.Screen name="Details" component={VideoDetailPage} />
+      </Tab.Navigator>
     </NavigationContainer>
   );
-}
+};
+
+export default App;
