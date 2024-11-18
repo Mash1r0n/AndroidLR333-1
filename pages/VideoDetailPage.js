@@ -2,7 +2,6 @@ import React from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
 
 const VideoDetailPage = ({ route }) => {
-  // Перевірка параметрів
   const { title = "Untitled Video", author = "Unknown Author", views = 0 } = route.params || {};
 
   return (

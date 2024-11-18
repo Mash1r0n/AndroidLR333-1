@@ -1,15 +1,23 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import VideoDetailPage from '.././pages/VideoDetailPage';
 
-const VideoCard = ({ thumbnail, title, views }) => {
+const VideoCard = ({ thumbnail, title, views, author }) => {
+  const navigation = useNavigation();
+
+  const handlePress = () => {
+    navigation.navigate('Details', { title, author, views });
+  };
+
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={handlePress}>
       <Image source={{ uri: thumbnail }} style={styles.thumbnail} />
       <View style={styles.infoContainer}>
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.views}>{views} views</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -20,7 +28,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 8,
     overflow: 'hidden',
-    elevation: 3, // Тінь для Android
+    elevation: 3,
   },
   thumbnail: {
     width: 120,

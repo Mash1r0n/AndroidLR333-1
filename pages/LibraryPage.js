@@ -10,7 +10,6 @@ const playlists = [
 const LibraryPage = () => {
   return (
     <View style={styles.container}>
-      <Header title="Library" />
       <FlatList
         data={playlists}
         keyExtractor={(item) => item.id}
