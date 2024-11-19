@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, Image, StyleSheet, Button, ActivityIndicator } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
 
@@ -19,6 +19,15 @@ const VideoDetailPage = ({ route }) => {
     queryKey: ['descriptions'],
     queryFn: fetchDescriptions,
   });
+
+  useEffect(() => {
+    if (data) {
+      console.log('Descriptions loaded:', data);
+    }
+    if (error) {
+      console.error('Error loading descriptions:', error);
+    }
+  }, [data, error]);
 
   if (isLoading) {
     return <ActivityIndicator size="large" color="#0000ff" />;
