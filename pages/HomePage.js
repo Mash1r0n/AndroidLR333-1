@@ -1,8 +1,8 @@
-import React from 'react';
-import { View, Text, FlatList, StyleSheet, ActivityIndicator, Alert } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, FlatList, StyleSheet, ActivityIndicator, TextInput, TouchableOpacity } from 'react-native';
 import VideoCard from '../components/VideoCard';
-import Header from '../components/Header';
 import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query';
+import Icon from 'react-native-vector-icons/MaterialIcons'; // Import Material Icons
 
 const API_URL = 'https://my-json-server.typicode.com/Mash1r0n/Android/videos';
 
@@ -27,10 +27,15 @@ const HomePage = () => {
 };
 
 const VideosList = () => {
+  const [searchQuery, setSearchQuery] = useState('');
   const { data, isLoading, error } = useQuery({
     queryKey: ['videos'],
     queryFn: fetchMovies,
   });
+
+  const filteredVideos = data?.filter((video) =>
+    video.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   if (isLoading) {
     return <ActivityIndicator size="large" color="#0000ff" />;
@@ -45,27 +50,67 @@ const VideosList = () => {
   }
 
   return (
-    <FlatList
-      data={data}
-      keyExtractor={(item) => item.id.toString()}
-      renderItem={({ item }) => (
-        <VideoCard
-          title={item.title}
-          views={item.views}
-          thumbnail={item.thumbnail}
-          author={item.author}
-          videoId={item.id}
-        />
-      )}
-    />
+    <View style={styles.listContainer}>
+      <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+      <FlatList
+        data={filteredVideos}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
+          <VideoCard
+            title={item.title}
+            views={item.views}
+            thumbnail={item.thumbnail}
+            author={item.author}
+            videoId={item.id}
+          />
+        )}
+      />
+    </View>
   );
 };
 
+const SearchBar = ({ searchQuery, setSearchQuery }) => {
+  return (
+    <View style={styles.searchContainer}>
+      <TextInput
+        style={styles.searchInput}
+        value={searchQuery}
+        onChangeText={setSearchQuery}
+        placeholder="Search videos..."
+      />
+      <TouchableOpacity onPress={() => {}}>
+        <Icon name="search" size={24} color="gray" style={styles.searchIcon} />
+      </TouchableOpacity>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  listContainer: {
+    flex: 1,
+    paddingTop: 16,
+  },
+  searchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingBottom: 8,
+  },
+  searchInput: {
+    flex: 1,
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    borderRadius: 20,
+    paddingLeft: 10,
+    fontSize: 16,
+  },
+  searchIcon: {
+    marginLeft: 8,
   },
   errorContainer: {
     flex: 1,
